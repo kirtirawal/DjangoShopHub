@@ -1,0 +1,35 @@
+<!-- checkout.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+</head>
+<body>
+    <h1>Checkout</h1>
+    <form method="post" action="{% url 'checkout' %}">
+        {% csrf_token %}
+        <label for="shipping_address">Shipping Address:</label>
+        <textarea name="shipping_address" required></textarea><br>
+
+        <label for="payment_method">Payment Method:</label>
+        <input type="text" name="payment_method" required><br>
+
+        <!-- Display order summary -->
+        <h2>Order Summary</h2>
+        <ul>
+            {% for item in cart_items %}
+            <li>
+            {{ item.product.title }} - Quantity: {{ item.quantity }} - Price : {{item.product.price}} - Subtotal: ${{ item.subtotal }}
+
+            </li>
+            {% endfor %}
+        </ul>
+        <p>Total Price: ${{ total_price }}</p>
+
+        <input type="submit" value="Place Order">
+    </form>
+</body>
+</html>

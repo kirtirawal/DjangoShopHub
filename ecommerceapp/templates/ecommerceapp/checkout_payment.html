@@ -1,0 +1,46 @@
+<!-- checkout_payment.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <h1>Checkout</h1>
+    <form method="post" id="payment-form">
+        {% csrf_token %}
+        <label for="shipping_address">Shipping Address:</label>
+        <textarea name="shipping_address" required></textarea><br>
+
+        <label for="payment_method">Payment Method:</label>
+        <div id="card-element"></div><br>
+
+        <!-- Display order summary -->
+        <h2>Order Summary</h2>
+        <ul>
+            {% for item in cart_items %}
+                <li>
+                    {{ item.product.title }} - Quantity: {{ item.quantity }} - Price: {{ item.product.price }} - Subtotal: ${{ item.subtotal }}
+                </li>
+            {% endfor %}
+        </ul>
+        <p>Total Price: ${{ total_price }}</p>
+
+        <div id="card-errors" role="alert"></div>
+
+        <button type="submit">Place Order</button>
+    </form>
+
+    <script>
+        var stripe = Stripe('your_stripe_publishable_key');  // Replace with your actual publishable key
+        var elements = stripe.elements();
+        var cardElement = elements.create('card');
+
+        cardElement.mount('#card-element');
+
+        var form = document.getElementById('payment-form');
+
+        form.addEventListener('submit

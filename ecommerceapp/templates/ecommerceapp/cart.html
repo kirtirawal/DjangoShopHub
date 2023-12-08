@@ -1,0 +1,25 @@
+<!-- ecommerce_app/templates/cart/cart.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+</head>
+<body>
+    <h1>Your Shopping Cart</h1>
+    <ul>
+        {% for item in cart_items %}
+            <li>
+                <h2>{{ item.product.title }}</h2>
+                <p>Quantity: {{ item.quantity }}</p>
+                <p>Price: ${{ item.product.price }}</p>
+                <p>Subtotal: ${{ item.subtotal }}</p>
+            </li>
+        <a href="{% url 'add_item' item.product.id %}">Add to Cart</a>
+        <a href="{% url 'remove_from_cart' item.product.id %}">Delete Item</a>
+        {% endfor %}
+    </ul>
+    <p>Total Price: ${{ total_price }}</p>
+</body>
+</html>

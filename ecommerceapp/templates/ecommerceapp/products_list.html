@@ -1,0 +1,31 @@
+<!-- ecommerce_app/templates/products_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Listings</title>
+</head>
+<body>
+   <h1>Product Listings</h1>
+    <ul>
+    {% for product in products %}
+        <li>
+            <h2>{{ product.title }}</h2>
+            <p>{{ product.description }}</p>
+            <p>Price: ${{ product.price }}</p>
+            <img src="{{ product.image.url }}" alt="{{ product.title }}">
+
+            {% if user.is_authenticated %}
+                <form method="post" action="{% url 'add_to_cart' product.id %}">
+                    {% csrf_token %}
+                    <input type="submit" value="Add to Cart">
+                </form>
+            {% else %}
+                <p>Please <a href="{% url 'login' %}">log in</a> to add to cart.</p>
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+</body>
+</html>
